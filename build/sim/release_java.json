@@ -1,0 +1,21 @@
+[
+  {
+    "type": "java",
+    "name": "jar (in project nimbus22)",
+    "extensions": [
+      {
+        "name": "Sim DriverStation",
+        "libName": "/Users/alexisrivera/Google Drive/SHS/Clubs and Teams/First Robotics/Programmers/GB2022/nimbus22/build/jni/release/libhalsim_ds_socket.dylib",
+        "defaultEnabled": false
+      },
+      {
+        "name": "Sim GUI",
+        "libName": "/Users/alexisrivera/Google Drive/SHS/Clubs and Teams/First Robotics/Programmers/GB2022/nimbus22/build/jni/release/libhalsim_gui.dylib",
+        "defaultEnabled": true
+      }
+    ],
+    "environment": {},
+    "libraryDir": "/Users/alexisrivera/Google Drive/SHS/Clubs and Teams/First Robotics/Programmers/GB2022/nimbus22/build/jni/release",
+    "mainClassName": "frc.robot.Main"
+  }
+]
