@@ -158,5 +158,6 @@ bin/
 
 # # Icon from IOS
 Icon*
+Icon^M^M
 
 # End of https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
