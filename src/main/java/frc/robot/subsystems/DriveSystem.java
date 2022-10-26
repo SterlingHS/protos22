@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.drive.*;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.SerialPort;
 
 
@@ -20,11 +21,11 @@ private WPI_TalonSRX leftRear  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK)
 private WPI_TalonSRX rightFront  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_FRONT);
 private WPI_TalonSRX rightRear  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_BACK);
 
-private MotorControllerGroup m_left = new MotorControllerGroup(leftFront, leftRear);
-private MotorControllerGroup m_right = new MotorControllerGroup(rightFront, rightRear);
-private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
+private MotorControllerGroup mLeft = new MotorControllerGroup(leftFront, leftRear);
+private MotorControllerGroup mRight = new MotorControllerGroup(rightFront, rightRear);
+private DifferentialDrive mDrive = new DifferentialDrive(mLeft, mRight);
 
-private AHRS navx_device;
+private AHRS navxDevice;
 
     /**
     *
@@ -38,8 +39,8 @@ private AHRS navx_device;
 
 
 
-    navx_device = new AHRS(SerialPort.Port.kMXP);  
-    navx_device.enableLogging(true);
+    navxDevice = new AHRS(SerialPort.Port.kMXP);  
+    navxDevice.enableLogging(true);
 
 }
 
@@ -56,16 +57,15 @@ private AHRS navx_device;
     }
 
 
-    public void mecanumDrive(double X, double Y, double Z, double slowdown_factor) 
+    public void ArcDrive(double xSpeed, double zRotation, double slowdownFactor) 
     {
-        /*if(slowdown_factor < 1 && slowdown_factor >= 0)
+        if(slowdownFactor < 1 && slowdownFactor >= 0)
         {
-            X*=slowdown_factor;
-            Y*=slowdown_factor;
-            Z*=slowdown_factor;
-        }*/
+            xSpeed*=slowdownFactor;
+            zRotation*=slowdownFactor;
+        }
 
-        mecanumDrive1.driveCartesian(-X, Y, -Z);
+        mDrive.arcadeDrive(xSpeed, zRotation);
     }
 
     public void stop() {
@@ -75,45 +75,45 @@ private AHRS navx_device;
         rightRear.stopMotor();
     }
     public void turnRight() {
-        mecanumDrive(0,0,0.5,1);
+        ArcDrive(0,0.5,1);
     }
 
     public void turnLeft(){
-        mecanumDrive(0,0,-0.5,1);
+        ArcDrive(0,-0.5,1);
     }
     public void forward(){
-        mecanumDrive(0,-0.35,0,1);
+        ArcDrive(.5,0,1);
     }
-    public void forwardSpeed(double speed){
-        mecanumDrive(0,-speed,0,1);
+    public void forwardSpeed(double xSpeed){
+        ArcDrive(xSpeed,0,1);
     }
     public void backward(){
-        mecanumDrive(0,0.35,0,1);
+        ArcDrive(-0.5,0,1);
     }
 
     public void calibrateGyro()
     {
-        navx_device.calibrate();
+        navxDevice.calibrate();
     }
 
     public boolean iscalibrating()
     {
-        return navx_device.isCalibrating();
+        return navxDevice.isCalibrating();
     }
 
     public void resetAngle()
     {
-        navx_device.reset();
+        navxDevice.reset();
     }
 
     public double getAngle()
     {
-        return navx_device.getAngle();
+        return navxDevice.getAngle();
     }
 
     public double getAngle360()
     {
-        double angle = navx_device.getAngle();
+        double angle = navxDevice.getAngle();
 
         double correctedAngle = angle % 360;
         if (correctedAngle < 0){

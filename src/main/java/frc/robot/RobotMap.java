@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 public class RobotMap {
     // Joysitck configuration
     public static int JOYDRIVER_USB_PORT = 0;

@@ -29,7 +29,7 @@ public class Drive extends CommandBase {
         // Called every time the scheduler runs while the command is scheduled.
         @Override
         public void execute() {
-            drivesystem.mecanumDrive(forward.getAsDouble(), lateral.getAsDouble(), rotation.getAsDouble(), RobotMap.DRIVER_SLOWDOWN);
+            drivesystem.ArcDrive(forward.getAsDouble(), rotation.getAsDouble(), RobotMap.DRIVER_SLOWDOWN);
             // System.out.println("Stopped...");
         }
 

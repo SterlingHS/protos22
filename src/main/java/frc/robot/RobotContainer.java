@@ -35,7 +35,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    drivesystem.setDefaultCommand(new Drive( drivesystem, driverController::getLeftX, driverController::getLeftY, driverController::getRightX) ); 
+    drivesystem.setDefaultCommand(new Drive( drivesystem, driverController::getLeftX, driverController::getRightX, RobotMap.DRIVER_SLOWDOWN) ); 
     
   }
 
