@@ -35,8 +35,10 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    drivesystem.setDefaultCommand(new Drive( drivesystem, driverController::getLeftX, driverController::getRightX, RobotMap.DRIVER_SLOWDOWN) ); 
+    drivesystem.setDefaultCommand(new Drive( drivesystem, driverController::getLeftX, driverController::getRightX) ); 
     
+
+    m_chooser.setDefaultOption("string",new MoveTime(drivesystem, 0.5,1000));
   }
 
   /*public static RobotContainer getInstance() {
@@ -61,8 +63,10 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
   */
+
   public Command getAutonomousCommand() {
     // The selected command will be run in autonomous
+    
     return m_chooser.getSelected();
   }
 

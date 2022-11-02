@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.drive.*;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 
 /**
@@ -25,7 +25,7 @@ private MotorControllerGroup mLeft = new MotorControllerGroup(leftFront, leftRea
 private MotorControllerGroup mRight = new MotorControllerGroup(rightFront, rightRear);
 private DifferentialDrive mDrive = new DifferentialDrive(mLeft, mRight);
 
-private AHRS navxDevice;
+private AHRS navx_device;
 
     /**
     *
@@ -39,8 +39,8 @@ private AHRS navxDevice;
 
 
 
-    navxDevice = new AHRS(SerialPort.Port.kMXP);  
-    navxDevice.enableLogging(true);
+    navx_device = new AHRS(SerialPort.Port.kMXP);  
+    navx_device.enableLogging(true);
 
 }
 
@@ -57,12 +57,12 @@ private AHRS navxDevice;
     }
 
 
-    public void ArcDrive(double xSpeed, double zRotation, double slowdownFactor) 
+    public void arcDrive(double xSpeed, double zRotation, double slowdown_factor) 
     {
-        if(slowdownFactor < 1 && slowdownFactor >= 0)
+        if(slowdown_factor < 1 && slowdown_factor >= 0)
         {
-            xSpeed*=slowdownFactor;
-            zRotation*=slowdownFactor;
+            xSpeed*=slowdown_factor;
+            zRotation*=slowdown_factor;
         }
 
         mDrive.arcadeDrive(xSpeed, zRotation);
@@ -75,45 +75,45 @@ private AHRS navxDevice;
         rightRear.stopMotor();
     }
     public void turnRight() {
-        ArcDrive(0,0.5,1);
+        arcDrive(0,0.5,1);
     }
 
     public void turnLeft(){
-        ArcDrive(0,-0.5,1);
+        arcDrive(0,-0.5,1);
     }
     public void forward(){
-        ArcDrive(.5,0,1);
+        arcDrive(0.5,0,1);
     }
     public void forwardSpeed(double xSpeed){
-        ArcDrive(xSpeed,0,1);
+        arcDrive(xSpeed,0,1);
     }
     public void backward(){
-        ArcDrive(-0.5,0,1);
+        arcDrive(-0.5,0,1);
     }
 
     public void calibrateGyro()
     {
-        navxDevice.calibrate();
+        navx_device.calibrate();
     }
 
     public boolean iscalibrating()
     {
-        return navxDevice.isCalibrating();
+        return navx_device.isCalibrating();
     }
 
     public void resetAngle()
     {
-        navxDevice.reset();
+        navx_device.reset();
     }
 
     public double getAngle()
     {
-        return navxDevice.getAngle();
+        return navx_device.getAngle();
     }
 
     public double getAngle360()
     {
-        double angle = navxDevice.getAngle();
+        double angle = navx_device.getAngle();
 
         double correctedAngle = angle % 360;
         if (correctedAngle < 0){

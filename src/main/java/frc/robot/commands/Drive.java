@@ -6,7 +6,8 @@ import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveSystem;
 import java.util.function.DoubleSupplier;
 
-   
+Encoder left_encoder = new Encoder (2,3);
+Encoder right_encoder = new Encoder (0,1);
 
 /**
  *
@@ -15,22 +16,21 @@ public class Drive extends CommandBase {
 
     private final DriveSystem drivesystem;
     private final DoubleSupplier forward;
-    private final DoubleSupplier lateral;
+
     private final DoubleSupplier rotation;
 
-    public Drive(DriveSystem subsystem, DoubleSupplier forward_im, DoubleSupplier lateral_im, DoubleSupplier rotation_im) 
+    public Drive(DriveSystem subsystem, DoubleSupplier forward_im, DoubleSupplier rotation_im) 
     {
         drivesystem = subsystem;
         forward = forward_im;
-        lateral = lateral_im;
         rotation = rotation_im;
         addRequirements(drivesystem);
     }
         // Called every time the scheduler runs while the command is scheduled.
         @Override
         public void execute() {
-            drivesystem.ArcDrive(forward.getAsDouble(), rotation.getAsDouble(), RobotMap.DRIVER_SLOWDOWN);
-            // System.out.println("Stopped...");
+            drivesystem.arcDrive(forward.getAsDouble(), rotation.getAsDouble(), RobotMap.DRIVER_SLOWDOWN);
+            // System.out.println(forward.getAsDouble(), rotation.getAsDouble(),'\n');
         }
 
         // Called once the command ends or is interrupted.
