@@ -24,8 +24,6 @@ package frc.robot;
  public class Constants {
     public static final double kTrackWidthMeters = 0.69;
 
-    public static final DifferentailDriveKinematics KDriveKinematics = new DifferentailDriveKinematics(kTrackWidthMeters)
-
    /**
     * public static final class DriveConstants {
     *   public static final int kLeftMotor1Port = 0;

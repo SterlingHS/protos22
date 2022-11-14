@@ -6,9 +6,6 @@ import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveSystem;
 import java.util.function.DoubleSupplier;
 
-Encoder left_encoder = new Encoder (2,3);
-Encoder right_encoder = new Encoder (0,1);
-
 /**
  *
  */

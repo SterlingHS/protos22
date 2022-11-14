@@ -10,71 +10,54 @@ import edu.wpi.first.wpilibj.drive.*;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.DifferentailDriveOdometry;
-import edu.wpi.first.math.kinematics.differentialDriveWheelSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.Encoder;
-
-
-
+import edu.wpi.first.wpilibj.DigitalInput;
 /**
  *
  */
 public class DriveSystem extends SubsystemBase {
 
-private WPI_TalonSRX leftFront = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_FRONT);
-private WPI_TalonSRX leftRear  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK);
-private WPI_TalonSRX rightFront  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_FRONT);
-private WPI_TalonSRX rightRear  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_BACK);
+    private WPI_TalonSRX leftFront = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_FRONT);
+    private WPI_TalonSRX leftRear  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK);
+    private WPI_TalonSRX rightFront  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_FRONT);
+    private WPI_TalonSRX rightRear  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_BACK);
 
-private MotorControllerGroup mLeft = new MotorControllerGroup(leftFront, leftRear);
-private MotorControllerGroup mRight = new MotorControllerGroup(rightFront, rightRear);
-private DifferentialDrive mDrive = new DifferentialDrive(mLeft, mRight);
+    private MotorControllerGroup mLeft = new MotorControllerGroup(leftFront, leftRear);
+    private MotorControllerGroup mRight = new MotorControllerGroup(rightFront, rightRear);
+    private DifferentialDrive mDrive = new DifferentialDrive(mLeft, mRight);
 
-DigitalInput input0 = new DigitalInput(0);
-DigitalInput input1 = new DigitalInput(1);
-DigitalInput input2 = new DigitalInput(2);
-DigitalInput input3 = new DigitalInput(3);
-DigitalInput input4 = new DigitalInput(4);
-DigitalInput input5 = new DigitalInput(5);
-DigitalInput input6 = new DigitalInput(6);
-DigitalInput input7 = new DigitalInput(7);
-DigitalInput input8 = new DigitalInput(8);
-DigitalInput input9 = new DigitalInput(9);
+    //public static final DifferentailDriveKinematics KDriveKinematics = new DifferentailDriveKinematics(kTrackWidthMeters);
 
+    DigitalInput input0 = new DigitalInput(0);
+    DigitalInput input1 = new DigitalInput(1);
+    DigitalInput input2 = new DigitalInput(2);
+    DigitalInput input3 = new DigitalInput(3);
+    DigitalInput input4 = new DigitalInput(4);
+    DigitalInput input5 = new DigitalInput(5);
+    DigitalInput input6 = new DigitalInput(6);
+    DigitalInput input7 = new DigitalInput(7);
+    DigitalInput input8 = new DigitalInput(8);
+    DigitalInput input9 = new DigitalInput(9);
 
+    Encoder rightEncoder, leftEncoder;
+    AHRS navx_device;
 
-private Encoder rightEncoder = 
-    new Encoder(
-        Constants.ENCODER_RIGHT_A, 
-        Constants.ENCODER_RIGHT_B);
+    public DriveSystem() 
+    {
+        leftRear.setInverted(true);
+        leftFront.setInverted(false);
+        rightRear.setInverted(true);
+        rightFront.setInverted(true);
 
-private Encoder leftEncoder =
-    new Encoder(
-        Constants.Encoder_LEFT_A,
-        Constants.Encoder_LEFT_B);
+        rightEncoder = new Encoder(Constants.ENCODER_RIGHT_A, Constants.ENCODER_RIGHT_B);
+        leftEncoder = new Encoder(Constants.ENCODER_LEFT_A, Constants.ENCODER_LEFT_B);
 
-
-
-
-
-private AHRS navx_device;
-
-    /**
-    *
-    */
-    public DriveSystem() {
- 
-    leftRear.setInverted(true);
-    leftFront.setInverted(false);
-    rightRear.setInverted(true);
-    rightFront.setInverted(true);
-
-
-
-    navx_device = new AHRS(SerialPort.Port.kMXP);  
-    navx_device.enableLogging(true);
-
-}
+        navx_device = new AHRS(SerialPort.Port.kMXP);  
+        navx_device.enableLogging(true);
+    }
 
     @Override
     public void periodic() {
@@ -184,6 +167,7 @@ private AHRS navx_device;
     public boolean DIO_STATE9(){
         return input9.get();
     }
+}
 
 
 
