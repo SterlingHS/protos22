@@ -70,5 +70,16 @@ public class RobotContainer {
     return m_chooser.getSelected();
   }
 
- public void update_smartboard(){}
+ public void update_smartboard(){
+    SmartDashboard.putBoolean("DIO 0", drivesystem.DIO_STATE0());
+    SmartDashboard.putBoolean("DIO 1", drivesystem.DIO_STATE1());
+    SmartDashboard.putBoolean("DIO 2", drivesystem.DIO_STATE2());
+    SmartDashboard.putBoolean("DIO 3", drivesystem.DIO_STATE3());
+    SmartDashboard.putBoolean("DIO 4", drivesystem.DIO_STATE4());
+    SmartDashboard.putBoolean("DIO 5", drivesystem.DIO_STATE5());
+    SmartDashboard.putBoolean("DIO 6", drivesystem.DIO_STATE6());
+    SmartDashboard.putBoolean("DIO 7", drivesystem.DIO_STATE7());
+    SmartDashboard.putBoolean("DIO 8", drivesystem.DIO_STATE8());
+    SmartDashboard.putBoolean("DIO 9", drivesystem.DIO_STATE9());
+}
 }

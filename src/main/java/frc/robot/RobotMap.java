@@ -18,10 +18,10 @@ public class RobotMap {
     public static double climbingSpeed = .45;
     public static double climbingSpeedBack = -.55;
 
-    //Encoder ports
+    /*Encoder ports
     public static int ENCODER_LEFT_A = 2;
     public static int ENCODER_LEFT_B = 3;
     public static int ENCODER_RIGHT_A = 0;
-    public static int ENCODER_RIGHT_B = 1;
+    public static int ENCODER_RIGHT_B = 1;*/
 }
 

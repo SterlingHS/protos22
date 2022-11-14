@@ -19,7 +19,13 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public class Constants {
+
+
+ public class Constants {
+    public static final double kTrackWidthMeters = 0.69;
+
+    public static final DifferentailDriveKinematics KDriveKinematics = new DifferentailDriveKinematics(kTrackWidthMeters)
+
    /**
     * public static final class DriveConstants {
     *   public static final int kLeftMotor1Port = 0;
@@ -28,5 +34,43 @@ public class Constants {
     *   public static final int kRightMotor2Port = 3; 
     * }
     */ 
-}
+    public static final double ksVolts = 0.2;
+    public static final double ksVoltSecondsPerMeter = 1.98;
+    public static final double kaVoltSeondSqauredPerMeter = 0.2;
+
+    public static final double kPDriveVel = 8.5;
+
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double KMaxAccelerationMetersperSecondSqaured = 3;
+    public static final double kRamseteB = 2;
+    public static double kRamseteZeta = 0.7;
+
+
+    public static int JOYDRIVER_USB_PORT = 0;
+
+    // CAN IDs
+    public static int DRIVETRAIN_LEFT_FRONT = 13;
+    public static int DRIVETRAIN_LEFT_BACK = 11;
+    public static int DRIVETRAIN_RIGHT_FRONT = 12;
+    public static int DRIVETRAIN_RIGHT_BACK = 14;
+
+    // Driver configuration
+    public static double DRIVER_SLOWDOWN = 1; 
+    public static int X_AXIS = 0;
+    public static int Y_AXIS = 1;
+    public static int Z_AXIS = 4;
+    public static double climbingSpeed = .45;
+    public static double climbingSpeedBack = -.55;
+
+    //Encoder ports
+    public static int ENCODER_LEFT_A = 2;
+    public static int ENCODER_LEFT_B = 3;
+    public static int ENCODER_RIGHT_A = 0;
+    public static int ENCODER_RIGHT_B = 1;
+
+
+};
+
+
+
 
