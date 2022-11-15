@@ -9,10 +9,10 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.drive.*;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+//import edu.wpi.first.math.geometry.Pose2d;
+//import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+//import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+//import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DigitalInput;
 /**
@@ -42,8 +42,9 @@ public class DriveSystem extends SubsystemBase {
     DigitalInput input8 = new DigitalInput(8);
     DigitalInput input9 = new DigitalInput(9);
 
-    Encoder rightEncoder, leftEncoder;
-    AHRS navx_device;
+    private Encoder rightEncoder = new Encoder(Constants.ENCODER_RIGHT_A, Constants.ENCODER_RIGHT_B);
+    private Encoder leftEncoder = new Encoder(Constants.ENCODER_LEFT_A, Constants.ENCODER_LEFT_B);
+    private AHRS navx_device = new AHRS(SerialPort.Port.kMXP);
 
     public DriveSystem() 
     {
@@ -52,11 +53,7 @@ public class DriveSystem extends SubsystemBase {
         rightRear.setInverted(true);
         rightFront.setInverted(true);
 
-        rightEncoder = new Encoder(Constants.ENCODER_RIGHT_A, Constants.ENCODER_RIGHT_B);
-        leftEncoder = new Encoder(Constants.ENCODER_LEFT_A, Constants.ENCODER_LEFT_B);
-
-        navx_device = new AHRS(SerialPort.Port.kMXP);  
-        navx_device.enableLogging(true);
+        // navx_device.enableLogging(true);
     }
 
     @Override
@@ -106,6 +103,7 @@ public class DriveSystem extends SubsystemBase {
         arcDrive(-0.5,0,1);
     }
 
+    /* 
     public void calibrateGyro()
     {
         navx_device.calibrate();
@@ -136,7 +134,7 @@ public class DriveSystem extends SubsystemBase {
         }
         return correctedAngle;
     }
-
+    */
     public boolean DIO_STATE0(){
         return input0.get();
     }
