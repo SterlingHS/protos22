@@ -1,19 +1,19 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants;
+//import frc.robot.Constants;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.kauailabs.navx.frc.AHRS;
+//import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.drive.*;
-import edu.wpi.first.wpilibj.SerialPort;
+//import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 //import edu.wpi.first.math.geometry.Pose2d;
 //import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 //import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 //import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.Encoder;
+//import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DigitalInput;
 /**
  *
@@ -42,9 +42,9 @@ public class DriveSystem extends SubsystemBase {
     DigitalInput input8 = new DigitalInput(8);
     DigitalInput input9 = new DigitalInput(9);
 
-    private Encoder rightEncoder = new Encoder(Constants.ENCODER_RIGHT_A, Constants.ENCODER_RIGHT_B);
-    private Encoder leftEncoder = new Encoder(Constants.ENCODER_LEFT_A, Constants.ENCODER_LEFT_B);
-    private AHRS navx_device = new AHRS(SerialPort.Port.kMXP);
+    //private Encoder rightEncoder = new Encoder(Constants.ENCODER_RIGHT_A, Constants.ENCODER_RIGHT_B);
+    //private Encoder leftEncoder = new Encoder(Constants.ENCODER_LEFT_A, Constants.ENCODER_LEFT_B);
+    //private AHRS navx_device = new AHRS(SerialPort.Port.kMXP);
 
     public DriveSystem() 
     {
@@ -135,34 +135,34 @@ public class DriveSystem extends SubsystemBase {
         return correctedAngle;
     }
     */
-    public boolean DIO_STATE0(){
+    public boolean state_DIO0(){
         return input0.get();
     }
-    public boolean DIO_STATE1(){
+    public boolean state_DIO1(){
         return input1.get();
     }
-    public boolean DIO_STATE2(){
+    public boolean state_DIO2(){
         return input2.get();
     }
-    public boolean DIO_STATE3(){
+    public boolean state_DIO3(){
         return input3.get();
     }
-    public boolean DIO_STATE4(){
+    public boolean state_DIO4(){
         return input4.get();
     }
-    public boolean DIO_STATE5(){
+    public boolean state_DIO5(){
         return input5.get();
     }
-    public boolean DIO_STATE6(){
+    public boolean state_DIO6(){
         return input6.get();
     }
-    public boolean DIO_STATE7(){
+    public boolean state_DIO7(){
         return input7.get();
     }
-    public boolean DIO_STATE8(){
+    public boolean state_DIO8(){
         return input8.get();
     }
-    public boolean DIO_STATE9(){
+    public boolean state_DIO9(){
         return input9.get();
     }
 }
