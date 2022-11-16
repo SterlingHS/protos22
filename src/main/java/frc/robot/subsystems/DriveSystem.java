@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 //import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 //import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.DigitalInput;
 /**
  *
  */
@@ -43,8 +42,8 @@ public class DriveSystem extends SubsystemBase {
         rightRear.setInverted(true);
         rightFront.setInverted(true);
 
-        rightEncoder.setDistancePerPulse(10/2208);
-        leftEncoder.setDistancePerPulse(10/2208);
+        rightEncoder.setDistancePerPulse(10./2208.);
+        leftEncoder.setDistancePerPulse(10./2208.);
         //2208 pulses per 10ft
         // navx_device.enableLogging(true);
     }
@@ -100,18 +99,29 @@ public class DriveSystem extends SubsystemBase {
         arcDrive(-0.5,0,1);
     }
 
-    public double read_right_encoder()
+    public double read_distance_right_encoder()
     {
         return rightEncoder.getDistance();
        
     }
 
-    public double read_left_encoder()
+    public double read_distance_left_encoder()
     {
         return leftEncoder.getDistance();
     }
 
-    public double readVelocityEncoder() {
+    public double read_pulse_right_encoder()
+    {
+        return rightEncoder.get();
+       
+    }
+
+    public double read_pulse_left_encoder()
+    {
+        return leftEncoder.get();
+    }
+
+    public double read_velocity_encoder() {
         
         return (rightEncoder.getRate()+leftEncoder.getRate())/2;
         

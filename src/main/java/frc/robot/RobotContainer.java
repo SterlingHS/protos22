@@ -70,8 +70,10 @@ public class RobotContainer {
 
  public void update_smartboard(){
         // SmartDashboard.putBoolean("DIO 9", drivesystem.state_DIO9());
-        SmartDashboard.putNumber("Right Encoder", drivesystem.read_right_encoder());
-        SmartDashboard.putNumber("Left Encoder", drivesystem.read_left_encoder());
-        SmartDashboard.putNumber("Velocity", drivesystem.readVelocityEncoder());
+        SmartDashboard.putNumber("Right Pulse", drivesystem.read_pulse_right_encoder());
+        SmartDashboard.putNumber("Left Pulse", drivesystem.read_pulse_left_encoder());
+        SmartDashboard.putNumber("Right Distance", drivesystem.read_distance_right_encoder());
+        SmartDashboard.putNumber("Left Distance", drivesystem.read_distance_left_encoder());
+        SmartDashboard.putNumber("Velocity", drivesystem.read_velocity_encoder());
 }
 }
