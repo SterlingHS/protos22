@@ -33,7 +33,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    drivesystem.setDefaultCommand(new Drive( drivesystem, driverController::getLeftX, driverController::getRightX) ); 
+    drivesystem.setDefaultCommand(new Drive( drivesystem, driverController::getLeftY, driverController::getLeftX) ); 
     
 
     m_chooser.setDefaultOption("string",new MoveTime(drivesystem, 0.5,1000));
@@ -69,15 +69,9 @@ public class RobotContainer {
   }
 
  public void update_smartboard(){
-    SmartDashboard.putBoolean("DIO 0", drivesystem.state_DIO0());
-    SmartDashboard.putBoolean("DIO 1", drivesystem.state_DIO1());
-    SmartDashboard.putBoolean("DIO 2", drivesystem.state_DIO2());
-    SmartDashboard.putBoolean("DIO 3", drivesystem.state_DIO3());
-    SmartDashboard.putBoolean("DIO 4", drivesystem.state_DIO4());
-    SmartDashboard.putBoolean("DIO 5", drivesystem.state_DIO5());
-    SmartDashboard.putBoolean("DIO 6", drivesystem.state_DIO6());
-    SmartDashboard.putBoolean("DIO 7", drivesystem.state_DIO7());
-    SmartDashboard.putBoolean("DIO 8", drivesystem.state_DIO8());
-    SmartDashboard.putBoolean("DIO 9", drivesystem.state_DIO9());
+        // SmartDashboard.putBoolean("DIO 9", drivesystem.state_DIO9());
+        SmartDashboard.putNumber("Right Encoder", drivesystem.read_right_encoder());
+        SmartDashboard.putNumber("Left Encoder", drivesystem.read_left_encoder());
+        SmartDashboard.putNumber("Velocity", drivesystem.readVelocityEncoder());
 }
 }

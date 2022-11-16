@@ -1,7 +1,7 @@
 
 package frc.robot.subsystems;
 
-//import frc.robot.Constants;
+import frc.robot.Constants;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 //import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 //import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 //import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-//import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DigitalInput;
 /**
  *
@@ -31,19 +31,9 @@ public class DriveSystem extends SubsystemBase {
 
     //public static final DifferentailDriveKinematics KDriveKinematics = new DifferentailDriveKinematics(kTrackWidthMeters);
 
-    DigitalInput input0 = new DigitalInput(0);
-    DigitalInput input1 = new DigitalInput(1);
-    DigitalInput input2 = new DigitalInput(2);
-    DigitalInput input3 = new DigitalInput(3);
-    DigitalInput input4 = new DigitalInput(4);
-    DigitalInput input5 = new DigitalInput(5);
-    DigitalInput input6 = new DigitalInput(6);
-    DigitalInput input7 = new DigitalInput(7);
-    DigitalInput input8 = new DigitalInput(8);
-    DigitalInput input9 = new DigitalInput(9);
 
-    //private Encoder rightEncoder = new Encoder(Constants.ENCODER_RIGHT_A, Constants.ENCODER_RIGHT_B);
-    //private Encoder leftEncoder = new Encoder(Constants.ENCODER_LEFT_A, Constants.ENCODER_LEFT_B);
+    private Encoder rightEncoder = new Encoder(Constants.ENCODER_RIGHT_A, Constants.ENCODER_RIGHT_B);
+    private Encoder leftEncoder = new Encoder(Constants.ENCODER_LEFT_A, Constants.ENCODER_LEFT_B);
     //private AHRS navx_device = new AHRS(SerialPort.Port.kMXP);
 
     public DriveSystem() 
@@ -53,6 +43,9 @@ public class DriveSystem extends SubsystemBase {
         rightRear.setInverted(true);
         rightFront.setInverted(true);
 
+        rightEncoder.setDistancePerPulse(10/2208);
+        leftEncoder.setDistancePerPulse(10/2208);
+        //2208 pulses per 10ft
         // navx_device.enableLogging(true);
     }
 
@@ -77,7 +70,7 @@ public class DriveSystem extends SubsystemBase {
             zRotation*=slowdown_factor;
         }
 
-        mDrive.arcadeDrive(xSpeed, zRotation);
+        mDrive.arcadeDrive(-xSpeed, zRotation);
     }
 
     public void stop() {
@@ -86,6 +79,7 @@ public class DriveSystem extends SubsystemBase {
         leftRear.stopMotor();
         rightRear.stopMotor();
     }
+
     public void turnRight() {
         arcDrive(0,0.5,1);
     }
@@ -93,14 +87,34 @@ public class DriveSystem extends SubsystemBase {
     public void turnLeft(){
         arcDrive(0,-0.5,1);
     }
+
     public void forward(){
         arcDrive(0.5,0,1);
     }
+
     public void forwardSpeed(double xSpeed){
         arcDrive(xSpeed,0,1);
     }
+
     public void backward(){
         arcDrive(-0.5,0,1);
+    }
+
+    public double read_right_encoder()
+    {
+        return rightEncoder.getDistance();
+       
+    }
+
+    public double read_left_encoder()
+    {
+        return leftEncoder.getDistance();
+    }
+
+    public double readVelocityEncoder() {
+        
+        return (rightEncoder.getRate()+leftEncoder.getRate())/2;
+        
     }
 
     /* 
@@ -135,36 +149,7 @@ public class DriveSystem extends SubsystemBase {
         return correctedAngle;
     }
     */
-    public boolean state_DIO0(){
-        return input0.get();
-    }
-    public boolean state_DIO1(){
-        return input1.get();
-    }
-    public boolean state_DIO2(){
-        return input2.get();
-    }
-    public boolean state_DIO3(){
-        return input3.get();
-    }
-    public boolean state_DIO4(){
-        return input4.get();
-    }
-    public boolean state_DIO5(){
-        return input5.get();
-    }
-    public boolean state_DIO6(){
-        return input6.get();
-    }
-    public boolean state_DIO7(){
-        return input7.get();
-    }
-    public boolean state_DIO8(){
-        return input8.get();
-    }
-    public boolean state_DIO9(){
-        return input9.get();
-    }
+    
 }
 
 
