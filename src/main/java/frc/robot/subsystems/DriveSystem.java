@@ -5,9 +5,9 @@ import frc.robot.Constants;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-//import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.drive.*;
-//import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 //import edu.wpi.first.math.geometry.Pose2d;
 //import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -33,7 +33,7 @@ public class DriveSystem extends SubsystemBase {
 
     private Encoder rightEncoder = new Encoder(Constants.ENCODER_RIGHT_A, Constants.ENCODER_RIGHT_B);
     private Encoder leftEncoder = new Encoder(Constants.ENCODER_LEFT_A, Constants.ENCODER_LEFT_B);
-    //private AHRS navx_device = new AHRS(SerialPort.Port.kMXP);
+    private AHRS navx_device = new AHRS(SerialPort.Port.kMXP);
 
     public DriveSystem() 
     {
@@ -45,7 +45,7 @@ public class DriveSystem extends SubsystemBase {
         rightEncoder.setDistancePerPulse(10./2208.);
         leftEncoder.setDistancePerPulse(10./2208.);
         //2208 pulses per 10ft
-        // navx_device.enableLogging(true);
+         navx_device.enableLogging(true);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class DriveSystem extends SubsystemBase {
         
     }
 
-    /* 
+    
     public void calibrateGyro()
     {
         navx_device.calibrate();
@@ -158,7 +158,34 @@ public class DriveSystem extends SubsystemBase {
         }
         return correctedAngle;
     }
-    */
+    
+    public double getPitch() {
+        return navx_device.getPitch();
+    }
+
+    public double getRoll() {
+        return navx_device.getRoll();
+    }
+
+    public double getCompassHeading() {
+        return navx_device.getCompassHeading();
+    }
+
+    public double getFusedHeading() {
+        return navx_device.getFusedHeading();
+    }
+
+    public double getLinearWorldAccelX() {
+        return navx_device.getWorldLinearAccelX();
+    }
+
+    public double getLinearWorldAccelY() {
+        return navx_device.getWorldLinearAccelY();
+    }
+
+    public double getLinearWorldAccelZ() {
+        return navx_device.getWorldLinearAccelZ();
+    }
     
 }
 

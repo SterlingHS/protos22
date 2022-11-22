@@ -75,5 +75,14 @@ public class RobotContainer {
         SmartDashboard.putNumber("Right Distance", drivesystem.read_distance_right_encoder());
         SmartDashboard.putNumber("Left Distance", drivesystem.read_distance_left_encoder());
         SmartDashboard.putNumber("Velocity", drivesystem.read_velocity_encoder());
+        SmartDashboard.putNumber("Angle", drivesystem.getAngle360());
+        SmartDashboard.putNumber("Pitch", drivesystem.getPitch());
+        SmartDashboard.putNumber("Roll", drivesystem.getRoll());
+        SmartDashboard.putNumber("Compass Heading", drivesystem.getCompassHeading());
+        SmartDashboard.putNumber("Fused Heading", drivesystem.getFusedHeading());
+        SmartDashboard.putNumber("Linear World Accel X", drivesystem.getLinearWorldAccelX());
+        SmartDashboard.putNumber("Linear World Accel Y", drivesystem.getLinearWorldAccelY());
+        SmartDashboard.putNumber("Linear World Accel Z", drivesystem.getLinearWorldAccelZ());
+
 }
 }
