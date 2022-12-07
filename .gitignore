@@ -167,3 +167,19 @@ bin/
 
 # Windows temp files
 *~
+
+ 
+# Ignore from WPILIB 
+/build/ 
+/nbproject/private/ 
+/dist/ 
+/target/ 
+save*.yaml 
+*# 
+/test-resources/ 
+/.svn/* 
+*.exec 
+dependency-reduced-pom.xml 
+nbactions.xml 
+src/main/resources/export/vendordeps/ 
+/test/ 
