@@ -5,38 +5,65 @@ import frc.robot.Constants;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.drive.*;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-//import edu.wpi.first.math.geometry.Pose2d;
-//import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-//import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-//import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.Encoder;
 /**
  *
  */
 public class DriveSystem extends SubsystemBase {
 
-    private WPI_TalonSRX leftFront = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_FRONT);
-    private WPI_TalonSRX leftRear  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK);
-    private WPI_TalonSRX rightFront  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_FRONT);
-    private WPI_TalonSRX rightRear  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_BACK);
+    private static WPI_TalonSRX leftFront = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_FRONT);
+    private static WPI_TalonSRX leftRear  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_BACK);
+    private static WPI_TalonSRX rightFront  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_FRONT);
+    private static WPI_TalonSRX rightRear  = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_BACK);
 
-    private MotorControllerGroup mLeft = new MotorControllerGroup(leftFront, leftRear);
-    private MotorControllerGroup mRight = new MotorControllerGroup(rightFront, rightRear);
-    private DifferentialDrive mDrive = new DifferentialDrive(mLeft, mRight);
-    DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
-    getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
+    public static Encoder leftencoder;
+    public static Encoder rightencoder;
+    public static AHRS gyro;
+
+    public static DifferentialDriveOdometry odometry;
+
+    protected static RamseteController ramseteController = new RamseteController();
+    protected static DifferentialDriveKinematics kinematic = new DifferentialDriveKinematics(0.6);
+    protected static Field2d field = new Field2d();
+
+    private static double kP = 9.4876;
+    private static double kI = 0;
+    private static double kD = 0;
+
+    protected static SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(1, 3);
+
+    protected static PIDController leftPID = new PIDController(kP, kI, kD);
+    protected static PIDController rightPID = new PIDController(kP, kI, kD);
+
+
+    private static MotorControllerGroup mLeft = new MotorControllerGroup(leftFront, leftRear);
+    private static MotorControllerGroup mRight = new MotorControllerGroup(rightFront, rightRear);
+    private static DifferentialDrive mDrive = new DifferentialDrive(mLeft, mRight);
 
     //public static final DifferentailDriveKinematics KDriveKinematics = new DifferentailDriveKinematics(kTrackWidthMeters);
 
 
-    private Encoder rightEncoder = new Encoder(Constants.ENCODER_RIGHT_A, Constants.ENCODER_RIGHT_B);
-    private Encoder leftEncoder = new Encoder(Constants.ENCODER_LEFT_A, Constants.ENCODER_LEFT_B);
+    private static Encoder rightEncoder = new Encoder(Constants.ENCODER_RIGHT_A, Constants.ENCODER_RIGHT_B);
+    private static Encoder leftEncoder = new Encoder(Constants.ENCODER_LEFT_A, Constants.ENCODER_LEFT_B);
     protected static Field2d trajField = new Field2d(); //FOR PATHWEAVER
     private AHRS navx_device = new AHRS(SerialPort.Port.kMXP);
+
 
     public DriveSystem() 
     {
@@ -136,7 +163,7 @@ public class DriveSystem extends SubsystemBase {
     {
         navx_device.calibrate();
     }
-    
+
     public boolean iscalibrating()
     {
         return navx_device.isCalibrating();
@@ -206,9 +233,9 @@ public class DriveSystem extends SubsystemBase {
         double leftVolt = leftPID.calculate(leftencoder.getRate(), left) + feedforward.calculate(left);
         double rightVolt = rightPID.calculate(rightencoder.getRate(), right) + feedforward.calculate(right);
 
-        leftmotor.setVoltage(leftVolt);
-        rightmotor.setVoltage(rightVolt);
-        drive.feed();
+        mLeft.setVoltage(leftVolt);
+        mRight.setVoltage(rightVolt);
+        mDrive.feed();
 
         SmartDashboard.putNumber("leftVolt", leftVolt);
         SmartDashboard.putNumber("rightVolt", rightVolt);
@@ -242,24 +269,27 @@ public class DriveSystem extends SubsystemBase {
 
         leftPID.setPID(kP, kI, kD);
         rightPID.setPID(kP, kI, kD);
-        drive.feed();
+        mDrive.feed();
     }
 
     public static void setODOPose(Pose2d pose) {
         odometry.resetPosition(pose, pose.getRotation());
         field.setRobotPose(odometry.getPoseMeters());
     }
-    public static void resetOdo(){
-        odometry.setODOPose([0,0],0); // intended to set the position to the begining
-    }
     public static void resetEnc(){
-        rightEncoder.reset()
-        leftEncoder.reset()
+        rightEncoder.reset();
+        leftEncoder.reset();
     }
     public static void resetGyro(){
-        gyro.reset()
+        gyro.reset();
+    }
+
+    public static void resetPIDS() {
+        leftPID.reset();
+        rightPID.reset();
     }
 }
+
 
 
 
