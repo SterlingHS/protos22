@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 
 public class PathweaverSubsystem {
     String trajectoryJSON = "paths/YourPath.wpilib.json"; //Put actual file path in place of YourPath
-    Trajectory trajectory = new Trajectory();
+    public static Trajectory trajectory = new Trajectory();
 
 
     public void PathWeaverInit() {

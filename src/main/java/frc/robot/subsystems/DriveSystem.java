@@ -54,7 +54,7 @@ public class DriveSystem extends SubsystemBase {
 
     private static MotorControllerGroup mLeft = new MotorControllerGroup(leftFront, leftRear);
     private static MotorControllerGroup mRight = new MotorControllerGroup(rightFront, rightRear);
-    private static DifferentialDrive mDrive = new DifferentialDrive(mLeft, mRight);
+    public static DifferentialDrive mDrive = new DifferentialDrive(mLeft, mRight);
 
     //public static final DifferentailDriveKinematics KDriveKinematics = new DifferentailDriveKinematics(kTrackWidthMeters);
 

@@ -7,23 +7,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
-import java.io.IOException;
-import java.nio.file.Path;
-
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.XboxController;
 
-
-/*Left off on loop() function, start() function. After that, trajectory implementation must be done by
-setting up trajs 
-*/
-
-
+//Add autoconstants and driveconstants
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -39,13 +32,7 @@ public class RobotContainer {
   private final XboxController driverController = new XboxController(RobotMap.JOYDRIVER_USB_PORT);
   
   // A chooser for autonomous commands
-  static SendableChooser<String> m_chooser = new SendableChooser<>();
-
-  static Timer timer = new Timer();
-
-  protected static String autoSelected;
-
-  
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
   * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -54,32 +41,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    int trajectoryAmount = 0; //Put number of trajectories here
-
-    String[] trajectoryJSON = {
-      //Put JSON names here, or find alternative
-    };
-
-    Trajectory[] trajectory = new Trajectory[trajectoryAmount];
-
-
-    chooserSetting();
-
-    for (int i = 0; i < trajectoryAmount; i++) {
-      try {
-        Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON[i]);
-        trajectory[i] = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      } catch (IOException ex) {
-        DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON[i] + "/n" + ex.getMessage(), ex.getStackTrace());
-      }
-    }
-
     // Configure default commands
     drivesystem.setDefaultCommand(new Drive( drivesystem, driverController::getLeftY, driverController::getLeftX) ); 
     
 
     m_chooser.setDefaultOption("string",new MoveTime(drivesystem, 0.5,1000));
-
   }
 
   /*public static RobotContainer getInstance() {
@@ -99,37 +65,53 @@ public class RobotContainer {
     return driverController;
   }
 
-  public static void start() {
-    DriveSystem.resetEnc();
-    DriveSystem.resetGyro();
-    DriveSystem.resetPIDS();
-    autoSelected = m_chooser.getSelected();
-
-
-  }
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
   */
 
-  public void getAutonomousCommand() {
-    // The selected command will be run in autonomous
-    
-    m_chooser.getSelected();
-  }
+  public Command getAutonomousCommand() {
 
-  public static void loop() {
-    DriveSystem.updateODO();
-    SmartDashboard.putNumber("Time", timer.get());
-    switch (autoSelected)
-  }
+    //Voltage contstraints uses information from DriveConstants to ensure acceptable acceleration
+    var autoVoltageConstraint =
+      new DifferentialDriveVoltageConstraint(
+          new SimpleMotorFeedforward(//Note: Get Drive Constants File
+            DriveConstants.ksVolts,
+            DriveConstants.kvVoltSecondsPerMeter,
+            DriveConstants.kaVoltSecondsSquaredPerMeter),
+          DriveConstants.kDriveKinematics, 10);
+      
+    TrajectoryConfig config =
+      new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+      config.setKinematics(DriveConstants.kDriveKinematics);
+      config.addConstraint(autoVoltageConstraint);
 
-  public static void chooserSetting() {
-    //m_chooser.setDefualtOption("Do Nothing", kDoNothing);
-    //Set up traj choices here
+    Trajectory exampleTrajectory = PathweaverSubsystem.trajectory;
+
+    RamseteCommand ramseteCommand =
+      new RamseteCommand(
+        exampleTrajectory,
+        drivesystem::getPose,
+        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(
+          DriveConstants.ksVolts,
+          DriveConstants.kvVoltSecondsPerMeter,
+          DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics,
+        DriveSystem::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDRiveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        drivesystem::tankDriveVolts,
+        drivesystem);
   
+
+    
+    DriveSystem.setODOPose(exampleTrajectory.getInitialPose());
+    DriveSystem.resetEnc();
+
+    return ramseteCommand.andThen(() -> drivesytem.tankDriveVolts(0,0));
+    //return m_chooser.getSelected();
   }
 
  public void update_smartboard(){
