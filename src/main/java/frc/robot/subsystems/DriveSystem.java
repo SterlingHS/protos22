@@ -218,6 +218,20 @@ public class DriveSystem extends SubsystemBase {
         return navx_device.getWorldLinearAccelZ();
     }
 
+    public void tankDriveVolts(double leftvolts, double rightvolts) {
+        mLeft.setVoltage(leftvolts);
+        mRight.setVoltage(rightvolts);
+        mDrive.feed();
+    }
+
+    public Pose2d getPose() {
+        return odometry.getPoseMeters();
+    }
+
+    public static DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(leftEncoder.getRate(), rightEncoder.getRate());
+    }
+
     public static void runTraj(Trajectory trajectory, double timeInSec) {
         Trajectory.State goal = trajectory.sample(timeInSec);
         trajField.setRobotPose(goal.poseMeters);

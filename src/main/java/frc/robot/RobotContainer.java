@@ -77,14 +77,14 @@ public class RobotContainer {
     var autoVoltageConstraint =
       new DifferentialDriveVoltageConstraint(
           new SimpleMotorFeedforward(//Note: Get Drive Constants File
-            DriveConstants.ksVolts,
-            DriveConstants.kvVoltSecondsPerMeter,
-            DriveConstants.kaVoltSecondsSquaredPerMeter),
-          DriveConstants.kDriveKinematics, 10);
+            Constants.ksVolts,
+            Constants.ksVoltSecondsPerMeter,
+            Constants.kaVoltSecondsSquaredPerMeter),
+          Constants.kDriveKinematics, 10);
       
     TrajectoryConfig config =
-      new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-      config.setKinematics(DriveConstants.kDriveKinematics);
+      new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond, Constants.kMaxAccelerationMetersPerSecondSquared);
+      config.setKinematics(Constants.kDriveKinematics);
       config.addConstraint(autoVoltageConstraint);
 
     Trajectory exampleTrajectory = PathweaverSubsystem.trajectory;
@@ -93,24 +93,25 @@ public class RobotContainer {
       new RamseteCommand(
         exampleTrajectory,
         drivesystem::getPose,
-        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
         new SimpleMotorFeedforward(
-          DriveConstants.ksVolts,
-          DriveConstants.kvVoltSecondsPerMeter,
-          DriveConstants.kaVoltSecondsSquaredPerMeter),
-        DriveConstants.kDriveKinematics,
+          Constants.ksVolts,
+          Constants.ksVoltSecondsPerMeter,
+          Constants.kaVoltSecondsSquaredPerMeter),
+        Constants.kDriveKinematics,
         DriveSystem::getWheelSpeeds,
-        new PIDController(DriveConstants.kPDRiveVel, 0, 0),
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(Constants.kPDriveVel, 0, 0),
+        new PIDController(Constants.kPDriveVel, 0, 0),
         drivesystem::tankDriveVolts,
         drivesystem);
+
   
 
     
     DriveSystem.setODOPose(exampleTrajectory.getInitialPose());
     DriveSystem.resetEnc();
 
-    return ramseteCommand.andThen(() -> drivesytem.tankDriveVolts(0,0));
+    return ramseteCommand.andThen(() -> drivesystem.tankDriveVolts(0,0));
     //return m_chooser.getSelected();
   }
 

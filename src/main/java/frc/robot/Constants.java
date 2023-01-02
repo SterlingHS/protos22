@@ -11,6 +11,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -22,7 +24,7 @@ package frc.robot;
 
 
  public class Constants {
-    public static final double kTrackWidthMeters = 0.69;
+    
 
    /**
     * public static final class DriveConstants {
@@ -32,16 +34,26 @@ package frc.robot;
     *   public static final int kRightMotor2Port = 3; 
     * }
     */ 
-    public static final double ksVolts = 0.2;
+
+
+//Pathweaver Constants; need to determine experimental values from identification routine.
+//The following values have not been verified.
+    public static final double kTrackWidthMeters = 0.69;
+    public static final double ksVolts = 0.2; 
     public static final double ksVoltSecondsPerMeter = 1.98;
-    public static final double kaVoltSeondSqauredPerMeter = 0.2;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.2;
 
     public static final double kPDriveVel = 8.5;
 
     public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double KMaxAccelerationMetersperSecondSqaured = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kRamseteB = 2;
     public static double kRamseteZeta = 0.7;
+
+    public static final DifferentialDriveKinematics kDriveKinematics =
+        new DifferentialDriveKinematics(kTrackWidthMeters);
+
+//End of Pathweaver Constants
 
 
     public static int JOYDRIVER_USB_PORT = 0;
@@ -65,6 +77,7 @@ package frc.robot;
     public static int ENCODER_LEFT_B = 3;
     public static int ENCODER_RIGHT_A = 0;
     public static int ENCODER_RIGHT_B = 1;
+
 
 
 };
