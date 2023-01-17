@@ -44,10 +44,10 @@ while(True):
     
 
     contours, hierarchy = cv2.findContours(binary_imgyellow, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    output_img = np.copy(im)
+    output_img = np.copy(frame)
     x_list = []
     y_list = []
-    height, width, channel = im.shape
+    height, width, channel = frame.shape
     
     for contour in contours:
 
@@ -71,10 +71,8 @@ while(True):
     cv2.imshow('Contour', output_img)
     #cv2.waitKey(0)
     input("Stop here.")
-    cv2.destroyAllWindows()
 
-
-    cv2.imshow('detected circles', frame)
+    #cv2.imshow('detected circles', frame)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
     if cv2.waitKey (1) == ord('q'):
