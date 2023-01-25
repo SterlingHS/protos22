@@ -1,5 +1,3 @@
-#dont be racist 
-
 
 from tkinter import E
 import cv2
@@ -70,8 +68,12 @@ while(True):
 
         rect = cv2.minAreaRect(maxContour) #record found time to draw
         center, size, angle = rect
+        x,y,w,h = cv2.boundingRect(maxContour)
+        center, size = (x,y),(w,h)
+        angle = 0
         # centerImage = cv2.circle(binary_imgyellow, (x,y) radius = 0, color = (0,0,0), thickness = 2)
-        center = tuple([int(dim) for dim in center]) # Convert to int so we can draw
+        # center = tuple([int(dim) for dim in center]) # Convert to int so we can draw
+        center = (int(x + w/2), int(y + h/2))
         cv2.circle(img = output_img, center = center, radius = 2, color = (255,0,0), thickness = 10)
       
         # calculate moments for each contour
@@ -87,8 +89,8 @@ while(True):
             cX, cY = 0, 0
         
         # Draw rectangle and circle
-        cv2.drawContours(output_img, [cv2.boxPoints(rect).astype(int)], -1, color = (0, 0, 0), thickness = 5
-        )
+        #cv2.drawContours(output_img, [cv2.boxPoints(rect).astype(int)], -1, color = (0, 0, 0), thickness = 5)
+        cv2.rectangle(output_img, (x,y), (x+w,y+h), (0, 0, 0), 5)
 
         x_list.append((center[0] - width / 2) / (width / 2))
         y_list.append((center[1] - width / 2) / (width / 2))
@@ -180,6 +182,6 @@ while(True):
     # cv2.imshow("Result Image", binary_imgpurple)
 
     # input("Press any key to continue...")
-    # def s():
-    #  1/0
+    def s():
+     1/0
     # s()    
