@@ -59,7 +59,7 @@ while(True):
             Area = cv2.contourArea(contour)
             if Area < 1000:
                 continue
-            print(cv2.contourArea(contour)) 
+            # print(cv2.contourArea(contour)) 
             #cv2.drawContours(output_img, contour, -1, color = (255, 255, 255), thickness = -1)
             
             if maxArea < Area: #new record! Update area and contour
@@ -118,15 +118,16 @@ while(True):
             if maxArea < Area: #new record! Update area and contour
                     maxArea = Area
                     maxContour = contour
+                    print(maxArea)
         
         rect = cv2.minAreaRect(maxContour)
         center, size, angle = rect
         center = tuple([int(dim) for dim in center]) # Convert to int so we can draw
         cv2.circle(img = output_img, center = center, radius = 2, color = (255,0,0), thickness = 10)
-
+        distanceInFeet = -0.0306818*(cv2.contourArea(contour)**(1/2)) + 9.80626
         # calculate moments for each contour
         M = cv2.moments(maxContour)
-
+        print(distanceInFeet)
         # calculate x,y coordinate of center
         if M["m00"] != 0:
          cX = int(M["m10"] / M["m00"])
@@ -143,6 +144,7 @@ while(True):
         y_list.append((center[1] - width / 2) / (width / 2))
 
         print(x_list)
+       
     cv2.imshow('Contour', output_img)
     #cv2.waitKey(0)
     #input("Stop here.")
