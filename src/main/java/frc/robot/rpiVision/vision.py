@@ -3,14 +3,33 @@ from tkinter import E
 import cv2
 import numpy as np
 
-cam = cv2.VideoCapture(0)
-if not cam.isOpened():
-    print("Cannot open camera")
+cam1 = cv2.VideoCapture(2)
+if not cam1.isOpened():
+    print("Cannot open camera 1")
+    exit()
+cam2 = cv2.VideoCapture(0)
+if not cam2.isOpened():
+    print("Cannot open camera 2")
     exit()
 
 while(True):
     # Capture frame-by-frame
-    ret, frame = cam.read()
+    ret, frame = cam1.read()
+    ret2, frame2 = cam2.read()
+
+    blankImage = np.zeros((frame.shape[0],frame.shape[1] * 2,3), np.uint8)
+
+    frame = cv2.flip(frame, 1)
+    frame2 = cv2.flip(frame2, 1)
+
+    blankImage = cv2.hconcat([frame, frame2])
+
+    # blankImage[0:frame.shape[0], 0:frame.shape[1]] = frame
+    # blankImage[0:frame2.shape[0], frame2.shape[1]:] = frame2
+
+    
+    #blankImage = cv2.rotate(blankImage, cv2.ROTATE_180)
+    cv2.imshow("180",blankImage)
 
     # convert image to HSV
     hsv_img = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -184,6 +203,6 @@ while(True):
     # cv2.imshow("Result Image", binary_imgpurple)
 
     # input("Press any key to continue...")
-    def s():
-     1/0
+    # def s():
+    # 1/0
     # s()    
